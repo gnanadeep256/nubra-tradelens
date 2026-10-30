@@ -1,0 +1,2430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0d1b2a" />
+  <title>Nubra TradeLens — Post-Trade Behavioural Review</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #16293d;
+      --navy-light: #223a54;
+      --ink: #111e2e;
+      --ink-secondary: #334457;
+      --muted: #526377;
+      --line: #e2e8f0;
+      --line-subtle: #edf2f7;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --blue: #1d68bd;
+      --blue-hover: #16569e;
+      --blue-soft: #eef5fc;
+      --blue-border: #c8e0f9;
+      --red: #b93829;
+      --red-soft: #fff1ef;
+      --red-border: #f8c9c3;
+      --green: #107548;
+      --green-soft: #edf8f2;
+      --green-border: #bce6cf;
+      --amber: #975a16;
+      --amber-soft: #fef8ee;
+      --amber-border: #f6dcab;
+      --shadow-sm: 0 1px 3px rgba(13,27,42,.04), 0 1px 2px rgba(13,27,42,.03);
+      --shadow-md: 0 4px 14px rgba(13,27,42,.06), 0 2px 5px rgba(13,27,42,.03);
+      --shadow-lg: 0 20px 50px rgba(13,27,42,.16), 0 8px 18px rgba(13,27,42,.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14.5px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2.5px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    /* Layout Shell */
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    /* Top Navigation Bar */
+    .topbar {
+      background: var(--navy);
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .topinner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .brandmark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #e6f0fc, #c5dcf7);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      font-weight: 850;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    }
+    .brand small {
+      display: block;
+      color: #8da4be;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .demo-pill {
+      border: 1px solid #324b67;
+      background: #15273b;
+      color: #d1e2f3;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11.5px;
+      font-weight: 550;
+    }
+    .active-pill {
+      border: 1px solid var(--green-border);
+      background: var(--green-soft);
+      color: var(--green);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .active-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .quiet-btn {
+      border: 1px solid #364f6b;
+      background: transparent;
+      color: #d1e2f3;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 550;
+      transition: all .15s ease;
+    }
+    .quiet-btn:hover {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 32px 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      color: var(--blue);
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .hero h1 {
+      font-size: clamp(25px, 3.5vw, 32px);
+      line-height: 1.18;
+      margin: 4px 0 8px;
+      letter-spacing: -.6px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 620px;
+      font-size: 14px;
+    }
+    .period {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 12px;
+      background: #edf2f7;
+      border-radius: 8px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    /* Stepper Navigation */
+    .stepper {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      background: #eaeff5;
+      border-radius: var(--radius-md);
+      margin-bottom: 22px;
+    }
+    .step {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all .15s ease;
+    }
+    .step .num {
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #d4dde7;
+      color: #3b4e63;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .step.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+    .step.active .num {
+      background: var(--navy);
+      color: #fff;
+    }
+    .step:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    /* Content Panels */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .panel h2 {
+      font-size: 20px;
+      line-height: 1.25;
+      margin: 0 0 4px;
+      letter-spacing: -.3px;
+      font-weight: 750;
+      color: var(--navy);
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Metric Grid (KPIs) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      background: #fafbfd;
+      transition: border-color .15s ease;
+    }
+    .metric:hover {
+      border-color: #cbd5e1;
+    }
+    .metric-label {
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--navy);
+    }
+    .metric-note {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+    .negative { color: var(--red) !important; }
+    .positive { color: var(--green) !important; }
+
+    /* Toolbar & File Controls */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 9px;
+      padding: 9px 15px;
+      font-weight: 650;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+    }
+    .btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .btn.primary {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+      box-shadow: 0 2px 6px rgba(13,27,42,.15);
+    }
+    .btn.primary:hover {
+      background: var(--navy-light);
+      border-color: var(--navy-light);
+      transform: translateY(-1px);
+    }
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .file-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .file-input { display: none; }
+    .period-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .period-select {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 7px 11px;
+      font-size: 12.5px;
+      font-weight: 550;
+    }
+
+    /* Notices & Disclaimers */
+    .notice {
+      background: var(--blue-soft);
+      border: 1px solid var(--blue-border);
+      color: #173d63;
+      border-radius: var(--radius-md);
+      padding: 12px 15px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      margin-top: 16px;
+    }
+    .notice strong { color: var(--navy); }
+    .disclaimer {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+    .error {
+      background: var(--red-soft);
+      color: #842318;
+      border: 1px solid var(--red-border);
+      border-radius: var(--radius-md);
+      padding: 12px 15px;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+    .hidden { display: none !important; }
+
+    /* Insights List View */
+    .insight-list {
+      display: grid;
+      gap: 14px;
+    }
+    .insight {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      transition: all .2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .insight:hover {
+      border-color: #b9cbe0;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    .rank {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: #edf3fa;
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .insight-title {
+      font-weight: 750;
+      font-size: 15.5px;
+      margin: 0 0 5px;
+      color: var(--navy);
+    }
+    .insight-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 640px;
+      line-height: 1.5;
+    }
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #f1f4f8;
+      color: var(--ink-secondary);
+      font-weight: 550;
+    }
+    .impact {
+      text-align: right;
+      min-width: 150px;
+      padding-left: 10px;
+    }
+    .impact .amount {
+      font-size: 22px;
+      font-weight: 850;
+      color: var(--red);
+      letter-spacing: -.5px;
+      white-space: nowrap;
+    }
+    .impact small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .link-btn {
+      background: transparent;
+      border: 0;
+      color: var(--blue);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 10px 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .link-btn:hover {
+      color: var(--blue-hover);
+      text-decoration: underline;
+    }
+    .empty {
+      border: 1px dashed #cbd5e1;
+      background: #fbfcfe;
+      border-radius: var(--radius-lg);
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* Data Visualisations in Modal */
+    .vis-card {
+      background: #fafbfd;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin: 16px 0;
+    }
+    .vis-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .vis-title {
+      font-size: 12.5px;
+      font-weight: 750;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .vis-subtitle {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    /* Horizontal Bar Comparison for Insight A */
+    .vis-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .vis-bar-row {
+      display: grid;
+      grid-template-columns: 140px 1fr 65px;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+    .vis-bar-label {
+      color: var(--ink-secondary);
+      font-weight: 600;
+    }
+    .vis-bar-track {
+      background: #e9edf3;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .vis-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width .4s ease;
+    }
+    .vis-bar-fill.win { background: var(--green); }
+    .vis-bar-fill.loss { background: var(--red); }
+    .vis-bar-val {
+      font-weight: 750;
+      text-align: right;
+    }
+    .vis-bar-val.win-val { color: var(--green); }
+    .vis-bar-val.loss-val { color: var(--red); }
+
+    /* Stacked Breakdown Bar for Insights B & C */
+    .vis-stacked-bar {
+      display: flex;
+      height: 24px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      background: #e2e8f0;
+    }
+    .vis-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 0 8px;
+      transition: width .3s ease;
+    }
+    .vis-segment.win { background: var(--green); }
+    .vis-segment.loss { background: var(--red); }
+    .vis-split-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .vis-split-stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+    }
+    .vis-split-stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .vis-split-stat strong {
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .vis-split-stat.win strong { color: var(--green); }
+    .vis-split-stat.loss strong { color: var(--red); }
+    .vis-split-stat.net strong { color: var(--navy); }
+    .vis-caption {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+      line-height: 1.45;
+    }
+    .vis-caption strong { color: var(--navy); }
+
+    /* Evidence Modal & Table */
+    .evidence-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 14px 0 6px;
+    }
+    .mini-stat {
+      background: #f8fafc;
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+    .mini-stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .mini-stat strong {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      max-height: 280px;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      z-index: 1;
+    }
+    th {
+      text-align: left;
+      color: var(--ink-secondary);
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    td {
+      border-bottom: 1px solid var(--line-subtle);
+      padding: 9px 12px;
+      color: var(--ink);
+    }
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; }
+    .interpretation {
+      background: var(--blue-soft);
+      border: 1px solid var(--blue-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: #1a4269;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 14px;
+    }
+    .feedback {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .feedback button {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 7px;
+      padding: 6px 11px;
+      color: var(--ink-secondary);
+      font-size: 11.5px;
+      font-weight: 600;
+      transition: all .15s ease;
+    }
+    .feedback button:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .feedback button.selected {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+      color: var(--green);
+    }
+
+    /* Experiment View & Cards */
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .choice {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: left;
+      background: #fff;
+      color: var(--ink);
+      min-height: 140px;
+      transition: all .15s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+    .choice:hover {
+      border-color: #b7cde5;
+    }
+    .choice.selected {
+      border: 2px solid var(--blue);
+      background: var(--blue-soft);
+      padding: 15px;
+    }
+    .choice strong {
+      display: block;
+      margin: 8px 0 5px;
+      font-size: 14.5px;
+      font-weight: 750;
+      color: var(--navy);
+    }
+    .choice span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .choice .radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #586b80;
+      border-radius: 50%;
+      display: block;
+      background: #fff;
+      transition: border .15s ease;
+    }
+    .choice.selected .radio {
+      border: 6px solid var(--blue);
+    }
+    .commit {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin: 18px 0;
+    }
+    .commit label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 750;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .commit p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--navy);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .active-commitment-box {
+      background: var(--green-soft);
+      border: 1px solid var(--green-border);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      margin-bottom: 22px;
+    }
+    .active-commitment-box h3 {
+      margin: 4px 0 6px;
+      color: #0b5936;
+      font-size: 16px;
+      font-weight: 750;
+    }
+    .active-commitment-box p {
+      margin: 0 0 10px;
+      color: #173b28;
+      font-size: 13.5px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .active-commitment-meta {
+      font-size: 11.5px;
+      color: #3b6b50;
+      font-weight: 550;
+    }
+    .success {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      margin-top: 14px;
+      font-weight: 550;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 22px;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--line-subtle);
+    }
+    .footer-note {
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    /* Modal Backdrop & Container */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,23,38,.65);
+      backdrop-filter: blur(2px);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      z-index: 100;
+    }
+    .modal {
+      width: min(840px, 100%);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 24px 26px;
+    }
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid var(--line-subtle);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+    .modal-top h2 {
+      margin: 2px 0 4px;
+      font-size: 20px;
+      letter-spacing: -.4px;
+      color: var(--navy);
+    }
+    .close {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      transition: all .15s ease;
+      line-height: 1;
+    }
+    .close:hover {
+      background: #e2e8f0;
+      color: var(--ink);
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-md);
+      font-size: 12.5px;
+      font-weight: 550;
+      z-index: 200;
+    }
+    .small-muted {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .experiment-grid { grid-template-columns: 1fr; }
+      .vis-split-stats { grid-template-columns: 1fr; }
+      .vis-bar-row { grid-template-columns: 110px 1fr 55px; }
+    }
+    @media (max-width: 640px) {
+      .shell { padding: 0 16px 40px; }
+      .topinner { padding: 12px 16px; }
+      .hero { display: block; padding-top: 20px; }
+      .period { margin-top: 10px; display: inline-block; }
+      .step { font-size: 11.5px; padding: 8px 10px; gap: 6px; }
+      .step .num { width: 18px; height: 18px; font-size: 10px; }
+      .panel { padding: 18px; }
+      .metric-value { font-size: 22px; }
+      .insight { grid-template-columns: 32px minmax(0, 1fr); gap: 10px; }
+      .impact { grid-column: 2; text-align: left; padding-left: 0; margin-top: 4px; }
+      .modal { padding: 18px 16px; }
+      .evidence-stats { grid-template-columns: 1fr; }
+      .footer { flex-direction: column-reverse; align-items: stretch; }
+      .footer .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topinner">
+      <div class="brand">
+        <div class="brandmark">T</div>
+        <div>TradeLens<small>Post-Trade Review</small></div>
+      </div>
+      <div class="top-actions">
+        <span class="active-pill hidden" id="savedPill">Active commitment recorded</span>
+        <span class="demo-pill" id="dataBadge">Synthetic demo data</span>
+        <button class="quiet-btn" id="resetBtn" type="button">Reset demo</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Post-Trade Reflection</div>
+        <h1>Find the trading habits costing you money.</h1>
+        <p>TradeLens turns completed trades into up to three evidence-backed observations, ranked by net cohort deficit, so you can decide what single behaviour to monitor next.</p>
+      </div>
+      <div class="period" id="periodLabel">Review period · Loading...</div>
+    </section>
+
+    <nav class="stepper" aria-label="Review steps">
+      <button class="step active" data-step="overview" aria-current="step"><span class="num">1</span> Monthly review</button>
+      <button class="step" data-step="insights" aria-current="false" disabled><span class="num">2</span> Costly habits</button>
+      <button class="step" data-step="experiment" aria-current="false" disabled><span class="num">3</span> Next-month experiment</button>
+    </nav>
+
+    <!-- Step 1: Monthly Overview -->
+    <section id="overviewView" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Your month at a glance</h2>
+          <p class="sub">Start with your completed trades. You can use the preloaded sample or upload a supported CSV.</p>
+        </div>
+        <div class="period-control">
+          <label for="periodSelect" class="small-muted">Filter period:</label>
+          <select id="periodSelect" class="period-select" aria-label="Filter reporting period"></select>
+        </div>
+      </div>
+
+      <div class="grid" id="metricGrid"></div>
+
+      <div class="toolbar">
+        <div class="file-controls">
+          <button class="btn" id="uploadBtn" type="button">Upload trade CSV</button>
+          <input class="file-input" id="csvInput" type="file" accept=".csv,text/csv" aria-label="Upload CSV file" />
+          <button class="btn" id="downloadBtn" type="button">Download sample CSV</button>
+        </div>
+        <button class="btn primary" id="generateBtn" type="button">Find my costly habits <span aria-hidden="true">→</span></button>
+      </div>
+
+      <div id="errorBox" class="error hidden" role="alert"></div>
+      <div class="notice">
+        <strong>Demo only — synthetic data. Not investment advice.</strong> Sample records do not represent actual Nubra customers. TradeLens is a retrospective educational tool, not an execution or recommendation platform.
+      </div>
+      <p class="disclaimer" id="dataSummary">Loading trade records...</p>
+    </section>
+
+    <!-- Step 2: Costly Habits -->
+    <section id="insightsView" class="hidden">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="eyebrow">Your review findings</div>
+            <h2>Patterns worth a closer look</h2>
+            <p class="sub">Ranked by net cohort deficit across all trades meeting each pattern. Individual losing-trade losses are preserved as explanatory context.</p>
+          </div>
+          <span class="tag" id="insightCount">0 findings</span>
+        </div>
+
+        <div id="suppressedNotice" class="notice hidden" role="note"></div>
+        <div id="insightList" class="insight-list"></div>
+
+        <div class="notice">
+          <strong>How to read this:</strong> A detected pattern is an observation, not proof of causation or guaranteed avoidable savings. The rupee figure shows the net cohort deficit across qualifying trades. Insights may share trades; do not add their amounts together.
+        </div>
+
+        <div class="footer">
+          <div class="footer-note">Inspect the underlying trades and calculations before deciding what to monitor.</div>
+          <button class="btn primary" id="toExperimentBtn" type="button">Choose one habit to monitor →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3: Next-Month Experiment -->
+    <section id="experimentView" class="panel hidden">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow">A small next step</div>
+          <h2>Choose one habit to monitor</h2>
+          <p class="sub">Select one behaviour from your active review findings to observe over the next month. This is a reflection exercise, not an automated trading rule.</p>
+        </div>
+        <span class="tag">Your commitment</span>
+      </div>
+
+      <div id="activeCommitmentContainer"></div>
+
+      <div id="choiceContainer">
+        <div id="choiceGrid" class="experiment-grid"></div>
+        <div class="commit">
+          <label id="commitLabel">YOUR COMMITMENT</label>
+          <p id="commitText">Select a behaviour above to create your commitment.</p>
+        </div>
+        <button class="btn primary" id="saveCommitmentBtn" type="button" disabled>Save my commitment</button>
+      </div>
+
+      <div id="savedNotice" class="success hidden" role="status"></div>
+
+      <div class="footer">
+        <button class="btn" id="backToInsightsBtn" type="button">← Back to insights</button>
+        <div class="footer-note">Persisted locally in this browser for review next month.</div>
+      </div>
+    </section>
+
+    <p class="disclaimer">Concept prototype · Synthetic demo dataset · Not investment advice · No brokerage account is connected.</p>
+  </main>
+
+  <div id="modalRoot" class="hidden"></div>
+  <div id="toast" class="toast hidden" role="status"></div>
+
+<script id="sampleData" type="application/json">[
+  {
+    "trade_id": "T001",
+    "instrument": "NIFTY",
+    "entry_time": "2026-09-30T09:15",
+    "exit_time": "2026-09-30T09:50",
+    "position_size_inr": 107000.0,
+    "gross_pnl_inr": -1423.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T002",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-09-30T09:55",
+    "exit_time": "2026-09-30T10:27",
+    "position_size_inr": 109000.0,
+    "gross_pnl_inr": -1496.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T003",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-09-30T10:32",
+    "exit_time": "2026-09-30T11:00",
+    "position_size_inr": 111000.0,
+    "gross_pnl_inr": -1569.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T004",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-01T09:15",
+    "exit_time": "2026-10-01T09:23",
+    "position_size_inr": 113000.0,
+    "gross_pnl_inr": -1642.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T005",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-01T09:28",
+    "exit_time": "2026-10-01T09:39",
+    "position_size_inr": 115000.0,
+    "gross_pnl_inr": 1005.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T006",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-01T10:04",
+    "exit_time": "2026-10-01T10:14",
+    "position_size_inr": 117000.0,
+    "gross_pnl_inr": 1096.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T007",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-02T09:15",
+    "exit_time": "2026-10-02T09:27",
+    "position_size_inr": 119000.0,
+    "gross_pnl_inr": 1187.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T008",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-02T09:52",
+    "exit_time": "2026-10-02T10:00",
+    "position_size_inr": 121000.0,
+    "gross_pnl_inr": -1934.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T009",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-02T10:05",
+    "exit_time": "2026-10-02T10:15",
+    "position_size_inr": 123000.0,
+    "gross_pnl_inr": 1369.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T010",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-05T09:15",
+    "exit_time": "2026-10-05T09:50",
+    "position_size_inr": 125000.0,
+    "gross_pnl_inr": -2080.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T011",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-05T09:55",
+    "exit_time": "2026-10-05T10:27",
+    "position_size_inr": 127000.0,
+    "gross_pnl_inr": -2153.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T012",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-05T10:32",
+    "exit_time": "2026-10-05T10:42",
+    "position_size_inr": 129000.0,
+    "gross_pnl_inr": 742.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T013",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-06T09:15",
+    "exit_time": "2026-10-06T09:27",
+    "position_size_inr": 131000.0,
+    "gross_pnl_inr": 833.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T014",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-06T09:52",
+    "exit_time": "2026-10-06T10:03",
+    "position_size_inr": 133000.0,
+    "gross_pnl_inr": 924.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T015",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-06T10:28",
+    "exit_time": "2026-10-06T10:56",
+    "position_size_inr": 135000.0,
+    "gross_pnl_inr": -1595.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T016",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-07T09:15",
+    "exit_time": "2026-10-07T09:23",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": -968.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T017",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-07T09:28",
+    "exit_time": "2026-10-07T10:00",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": -1041.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T018",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-07T10:05",
+    "exit_time": "2026-10-07T10:15",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 1288.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T019",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-08T09:15",
+    "exit_time": "2026-10-08T09:50",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": -1187.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T020",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-08T09:55",
+    "exit_time": "2026-10-08T10:03",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": -1260.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T021",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-08T10:08",
+    "exit_time": "2026-10-08T10:18",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": 661.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T022",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-09T09:15",
+    "exit_time": "2026-10-09T09:27",
+    "position_size_inr": 70500.0,
+    "gross_pnl_inr": 752.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T023",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-09T09:52",
+    "exit_time": "2026-10-09T10:03",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": 843.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T024",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-09T10:28",
+    "exit_time": "2026-10-09T10:36",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": -702.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T025",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-12T09:15",
+    "exit_time": "2026-10-12T09:50",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": -775.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T026",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-12T09:55",
+    "exit_time": "2026-10-12T10:27",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": -848.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T027",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-12T10:32",
+    "exit_time": "2026-10-12T11:00",
+    "position_size_inr": 23000.0,
+    "gross_pnl_inr": -921.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T028",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-13T09:15",
+    "exit_time": "2026-10-13T09:27",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": 1298.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T029",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-13T09:52",
+    "exit_time": "2026-10-13T10:24",
+    "position_size_inr": 32200.0,
+    "gross_pnl_inr": -1067.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T030",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-13T10:29",
+    "exit_time": "2026-10-13T10:39",
+    "position_size_inr": 24500.0,
+    "gross_pnl_inr": 580.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T031",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-14T09:15",
+    "exit_time": "2026-10-14T09:50",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": -1213.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T032",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-14T09:55",
+    "exit_time": "2026-10-14T10:06",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": 762.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T033",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-14T10:31",
+    "exit_time": "2026-10-14T10:41",
+    "position_size_inr": 44000.0,
+    "gross_pnl_inr": 853.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T034",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-15T09:15",
+    "exit_time": "2026-10-15T09:50",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": -1432.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T035",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-15T09:55",
+    "exit_time": "2026-10-15T10:27",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": -655.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T036",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-15T10:32",
+    "exit_time": "2026-10-15T10:42",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 1126.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T037",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-16T09:15",
+    "exit_time": "2026-10-16T09:27",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": 1217.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T038",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-16T09:52",
+    "exit_time": "2026-10-16T10:24",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": -874.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T039",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-16T10:29",
+    "exit_time": "2026-10-16T10:57",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": -947.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T040",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-19T09:15",
+    "exit_time": "2026-10-19T09:23",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": -1020.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T041",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-19T09:28",
+    "exit_time": "2026-10-19T09:39",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": 681.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T042",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-19T10:04",
+    "exit_time": "2026-10-19T10:14",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": 772.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T043",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-20T09:15",
+    "exit_time": "2026-10-20T09:27",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": 863.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T044",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-20T09:52",
+    "exit_time": "2026-10-20T10:00",
+    "position_size_inr": 50200.0,
+    "gross_pnl_inr": -1312.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T045",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-20T10:05",
+    "exit_time": "2026-10-20T10:33",
+    "position_size_inr": 23000.0,
+    "gross_pnl_inr": -1385.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T046",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-21T09:15",
+    "exit_time": "2026-10-21T09:50",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": -1458.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T047",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-21T09:55",
+    "exit_time": "2026-10-21T10:27",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": -681.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T048",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-21T10:32",
+    "exit_time": "2026-10-21T10:42",
+    "position_size_inr": 24500.0,
+    "gross_pnl_inr": 1318.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T049",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-22T09:15",
+    "exit_time": "2026-10-22T09:50",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": -827.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T050",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-22T09:55",
+    "exit_time": "2026-10-22T10:06",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": 600.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T051",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-22T10:31",
+    "exit_time": "2026-10-22T10:59",
+    "position_size_inr": 26000.0,
+    "gross_pnl_inr": -973.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T052",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-23T09:15",
+    "exit_time": "2026-10-23T09:27",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": 782.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T053",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-23T09:52",
+    "exit_time": "2026-10-23T10:24",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": -1119.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T054",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-23T10:29",
+    "exit_time": "2026-10-23T10:39",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 964.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T055",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-26T09:15",
+    "exit_time": "2026-10-26T09:50",
+    "position_size_inr": 68000.0,
+    "gross_pnl_inr": -1265.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T056",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-26T09:55",
+    "exit_time": "2026-10-26T10:03",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": -1338.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T057",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-26T10:08",
+    "exit_time": "2026-10-26T10:18",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": 1237.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T058",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-27T09:15",
+    "exit_time": "2026-10-27T09:27",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": 1328.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T059",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-27T09:52",
+    "exit_time": "2026-10-27T10:03",
+    "position_size_inr": 32200.0,
+    "gross_pnl_inr": 1419.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T060",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-27T10:28",
+    "exit_time": "2026-10-27T10:38",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": 610.0,
+    "charges_inr": 35.0
+  }
+]</script>
+<script>
+(() => {
+  'use strict';
+  const REQUIRED = ['trade_id','instrument','entry_time','exit_time','position_size_inr','gross_pnl_inr','charges_inr'];
+  const MIN_GROUP = 5;
+  const INDEX_FAMILY = new Set(['NIFTY','BANKNIFTY','FINNIFTY','MIDCPNIFTY','SENSEX','BANKEX']);
+
+  const money = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n);
+  const signedMoney = n => (n<0?'−':'') + money(Math.abs(n));
+  const number = n => new Intl.NumberFormat('en-IN',{maximumFractionDigits:1}).format(n);
+  const dt = s => new Date(s);
+  const minutesBetween = (a,b) => (dt(b)-dt(a))/60000;
+  const durationMin = t => minutesBetween(t.entry_time,t.exit_time);
+  const median = values => { if(!values.length) return null; const x=[...values].sort((a,b)=>a-b); const m=Math.floor(x.length/2); return x.length%2?x[m]:(x[m-1]+x[m])/2; };
+  const percentileNearestRank = (values,p) => { const x=[...values].sort((a,b)=>a-b); return x[Math.max(0,Math.ceil(p*x.length)-1)]; };
+  const escapeHtml = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  let rawTrades = [];
+  let trades = [];
+  let insights = [];
+  let dismissedInsightIds = new Set();
+  let hasGeneratedInsights = false;
+  let isDemo = true;
+  let selectedHabit = '';
+  let selectedPeriod = 'all';
+  let activeCommitment = null;
+  let toastTimer;
+  let lastFocusedElement = null;
+
+  const $ = id => document.getElementById(id);
+
+  function parseCsv(text){
+    const rows=[]; let row=[], cell='', quoted=false;
+    for(let i=0;i<text.length;i++){
+      const c=text[i];
+      if(c==='"'){
+        if(quoted && text[i+1]==='"'){cell+='"';i++;} else quoted=!quoted;
+      } else if(c===',' && !quoted){row.push(cell);cell='';}
+      else if((c==='\n'||c==='\r') && !quoted){
+        if(c==='\r' && text[i+1]==='\n') i++;
+        row.push(cell);cell='';
+        if(row.some(v=>v.trim()!=='')) rows.push(row);
+        row=[];
+      } else cell+=c;
+    }
+    if(cell.length||row.length){row.push(cell);if(row.some(v=>v.trim()!=='')) rows.push(row);}
+    if(!rows.length) throw new Error('The CSV is empty. Add completed trades and try again.');
+    const headers=rows.shift().map(h=>h.trim().replace(/^\uFEFF/,''));
+    const missing=REQUIRED.filter(h=>!headers.includes(h));
+    if(missing.length) throw new Error('Missing required columns: '+missing.join(', ')+'. Download the sample CSV to see the supported format.');
+    return rows.map((cells,idx)=>{
+      const obj={}; headers.forEach((h,i)=>obj[h]=(cells[i]??'').trim());
+      const rowNum=idx+2;
+      for(const key of REQUIRED) if(!obj[key] && obj[key]!=='0') throw new Error(`Row ${rowNum}: ${key} is missing.`);
+      const entry=dt(obj.entry_time), exit=dt(obj.exit_time);
+      if(Number.isNaN(entry.getTime())||Number.isNaN(exit.getTime())) throw new Error(`Row ${rowNum}: entry_time or exit_time is not a valid date/time.`);
+      if(exit<=entry) throw new Error(`Row ${rowNum}: exit_time must be after entry_time.`);
+      const pos=Number(obj.position_size_inr), gross=Number(obj.gross_pnl_inr), charges=Number(obj.charges_inr);
+      if(!Number.isFinite(pos)||pos<=0) throw new Error(`Row ${rowNum}: position_size_inr must be greater than zero.`);
+      if(!Number.isFinite(gross)) throw new Error(`Row ${rowNum}: gross_pnl_inr must be a valid number.`);
+      if(!Number.isFinite(charges)||charges<0) throw new Error(`Row ${rowNum}: charges_inr must be zero or greater.`);
+      return {trade_id:obj.trade_id,instrument:obj.instrument,entry_time:obj.entry_time,exit_time:obj.exit_time,position_size_inr:pos,gross_pnl_inr:gross,charges_inr:charges,net_pnl_inr:gross-charges};
+    });
+  }
+
+  function validateTrades(input){
+    if(!input.length) throw new Error('No completed trades found in this file.');
+    const ids=new Set();
+    for(const t of input){ if(ids.has(t.trade_id)) throw new Error(`Duplicate trade_id: ${t.trade_id}. Each row must represent one unique completed trade.`); ids.add(t.trade_id); }
+    return [...input].sort((a,b)=>dt(a.entry_time)-dt(b.entry_time));
+  }
+
+  function checkInstrumentComparability(data){
+    const instruments = new Set(data.map(t=>t.instrument));
+    if(instruments.size <= 1) return {comparable: true, reason: 'Single instrument dataset'};
+    let allIndex = true;
+    for(const inst of instruments) if(!INDEX_FAMILY.has(inst.toUpperCase())) { allIndex = false; break; }
+    if(allIndex) return {comparable: true, reason: 'Recognised index derivatives family with compatible notional scale'};
+    const byInst={};
+    data.forEach(t=>{ if(!byInst[t.instrument]) byInst[t.instrument]=[]; byInst[t.instrument].push(t.position_size_inr); });
+    const meds = Object.values(byInst).map(arr=>median(arr)).filter(v=>v!==null);
+    if(meds.length && (Math.max(...meds) / Math.min(...meds)) > 3.0){
+      return {comparable: false, reason: `Trades span multiple instruments with severe notional disparity (${number(Math.max(...meds)/Math.min(...meds))}x). Position sizes cannot be reliably benchmarked without contract normalisation.`};
+    }
+    return {comparable: false, reason: `Trades span disparate instruments (${Array.from(instruments).sort().join(', ')}) without a common contract or lot-size baseline.`};
+  }
+
+  function createInsights(data){
+    const out=[];
+    const wins=data.filter(t=>t.net_pnl_inr>0), losses=data.filter(t=>t.net_pnl_inr<0);
+
+    // Rule A: losing durations greater than the median duration of profitable trades.
+    if(wins.length>=MIN_GROUP && losses.length>=MIN_GROUP){
+      const winningMedian=median(wins.map(durationMin));
+      const losingMedian=median(losses.map(durationMin));
+      const flagged=losses.filter(t=>durationMin(t)>winningMedian);
+      if(flagged.length>=3){
+        const totalLoss=Math.abs(flagged.reduce((s,t)=>s+t.net_pnl_inr,0));
+        out.push({
+          id:'holding',
+          title:'Losing trades held longer',
+          description:`The median losing trade lasted ${number(losingMedian)} minutes, compared with ${number(winningMedian)} minutes for profitable trades. ${flagged.length} losing trades exceeded the profitable-trade median duration.`,
+          rule:'Flag a losing trade when its holding duration is greater than the median holding duration of profitable trades in this review period.',
+          sample:`${flagged.length} flagged losing trades · ${wins.length} profitable baseline trades`,
+          cohortDeficit: totalLoss,
+          losingLossAmount: totalLoss,
+          winningGainAmount: 0,
+          lossAmount: totalLoss,
+          winningMedian: winningMedian,
+          losingMedian: losingMedian,
+          trades: flagged,
+          stats:[['Net cohort deficit',money(totalLoss)],['Flagged losing trades',String(flagged.length)],['Median losing duration',`${number(losingMedian)} min`],['Median winning duration',`${number(winningMedian)} min`]],
+          caveat:'This is a duration comparison, not proof that holding a position longer caused the loss or that an earlier exit would definitely have prevented the deficit.'
+        });
+      }
+    }
+
+    // Rule B: Optimised O(N log N) lookup with deterministic simultaneous exit handling
+    const byExit = [...data].sort((a,b)=>dt(a.exit_time)-dt(b.exit_time));
+    const exitDates = byExit.map(t=>dt(t.exit_time).getTime());
+    const matched=[];
+
+    for(const t of data){
+      const entryMs = dt(t.entry_time).getTime();
+      let low=0, high=exitDates.length-1, bestIdx=-1;
+      while(low<=high){
+        const mid=Math.floor((low+high)/2);
+        if(exitDates[mid]<=entryMs){ bestIdx=mid; low=mid+1; } else { high=mid-1; }
+      }
+      while(bestIdx>=0 && byExit[bestIdx].trade_id===t.trade_id) bestIdx--;
+      if(bestIdx<0) continue;
+
+      const maxExitMs = exitDates[bestIdx];
+      const tied=[];
+      let i=bestIdx;
+      while(i>=0 && exitDates[i]===maxExitMs){
+        if(byExit[i].trade_id!==t.trade_id) tied.push(byExit[i]);
+        i--;
+      }
+      if(!tied.length) continue;
+
+      const gap = (entryMs - maxExitMs)/60000;
+      if(gap>=0 && gap<=10){
+        const hasLoss = tied.some(p=>p.net_pnl_inr<0);
+        const hasWin = tied.some(p=>p.net_pnl_inr>0);
+        if(hasLoss && !hasWin){
+          matched.push(t);
+        }
+      }
+    }
+
+    const matchedLosses=matched.filter(t=>t.net_pnl_inr<0);
+    const matchedWins=matched.filter(t=>t.net_pnl_inr>0);
+    if(matched.length>=MIN_GROUP && matchedLosses.length>=3){
+      const cohortNet = matched.reduce((s,t)=>s+t.net_pnl_inr,0);
+      const cohortDeficit = cohortNet < 0 ? Math.abs(cohortNet) : 0;
+      const losingLoss = Math.abs(matchedLosses.reduce((s,t)=>s+t.net_pnl_inr,0));
+      const winningGain = matchedWins.reduce((s,t)=>s+t.net_pnl_inr,0);
+
+      out.push({
+        id:'after-loss',
+        title:'Trades opened shortly after a loss',
+        description:`${matched.length} trades opened within 10 minutes after an unambiguous prior loss. ${matchedLosses.length} ended at a loss, while ${matchedWins.length} closed in profit.`,
+        rule:'Find the nearest previously completed trade(s). Flag the next trade when it opens 0–10 minutes after prior trades closed with an unambiguous net loss.',
+        sample:`${matched.length} trades entered after a loss · ${matchedLosses.length} subsequent losses · ${matchedWins.length} subsequent wins`,
+        cohortDeficit: cohortDeficit,
+        cohortNet: cohortNet,
+        losingLossAmount: losingLoss,
+        winningGainAmount: winningGain,
+        lossAmount: cohortDeficit,
+        winCount: matchedWins.length,
+        lossCount: matchedLosses.length,
+        trades: matched,
+        stats:[['Net cohort deficit',money(cohortDeficit)],['Losses in losing trades',money(losingLoss)],['Cohort trades (losses / wins)',`${matched.length} (${matchedLosses.length} / ${matchedWins.length})`],[ 'Subsequent win rate',`${number((matchedWins.length/matched.length)*100)}%`]],
+        caveat:`Timing does not establish emotional trading or revenge intent. Note that ${matchedWins.length} of these ${matched.length} trades actually closed in profit (${signedMoney(winningGain)}). The net deficit across the entire cohort is ${money(cohortDeficit)}.`
+      });
+    }
+
+    // Rule C: Large positions with comparability validation
+    const compCheck = checkInstrumentComparability(data);
+    let ruleCSuppressed = null;
+
+    if(!compCheck.comparable){
+      ruleCSuppressed = compCheck.reason;
+    } else if(data.length>=20){
+      const q75=percentileNearestRank(data.map(t=>t.position_size_inr),0.75);
+      const large=data.filter(t=>t.position_size_inr>=q75);
+      const largeLosses=large.filter(t=>t.net_pnl_inr<0);
+      const largeWins=large.filter(t=>t.net_pnl_inr>0);
+
+      if(large.length>=MIN_GROUP && largeLosses.length>=3){
+        const cohortNet = large.reduce((s,t)=>s+t.net_pnl_inr,0);
+        const cohortDeficit = cohortNet < 0 ? Math.abs(cohortNet) : 0;
+        const losingLoss = Math.abs(largeLosses.reduce((s,t)=>s+t.net_pnl_inr,0));
+        const winningGain = largeWins.reduce((s,t)=>s+t.net_pnl_inr,0);
+
+        out.push({
+          id:'large-size',
+          title:'Losses in larger positions',
+          description:`${largeLosses.length} of ${large.length} trades in the largest position-size quartile ended at a loss. Comparability established across: ${compCheck.reason}.`,
+          rule:'Calculate the 75th-percentile position notional within comparable instruments. Benchmark trades at or above that threshold.',
+          sample:`${large.length} trades in largest quartile · ${largeLosses.length} losses · ${largeWins.length} wins`,
+          cohortDeficit: cohortDeficit,
+          cohortNet: cohortNet,
+          losingLossAmount: losingLoss,
+          winningGainAmount: winningGain,
+          lossAmount: cohortDeficit,
+          winCount: largeWins.length,
+          lossCount: largeLosses.length,
+          q75: q75,
+          trades: large,
+          stats:[['Net cohort deficit',money(cohortDeficit)],['Losses in losing trades',money(losingLoss)],['Trades in quartile (losses / wins)',`${large.length} (${largeLosses.length} / ${largeWins.length})`],['Quartile threshold (Q75)',money(q75)]],
+          caveat:`Larger positions naturally produce larger rupee swings in both directions. ${largeWins.length} large trades were profitable (${signedMoney(winningGain)}). This does not prove sizing was inappropriate.`
+        });
+      }
+    }
+
+    return {
+      insights: out.sort((a,b)=>b.cohortDeficit-a.cohortDeficit).slice(0,3),
+      suppressedReason: ruleCSuppressed
+    };
+  }
+
+  function summary(data){
+    const gross=data.reduce((s,t)=>s+t.gross_pnl_inr,0), charges=data.reduce((s,t)=>s+t.charges_inr,0);
+    return {count:data.length,gross,charges,net:gross-charges};
+  }
+
+  function formatDateRange(data){
+    const dates=data.map(t=>dt(t.entry_time)).sort((a,b)=>a-b);
+    if(!dates.length) return '';
+    const fmt=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    return `${fmt(dates[0])} – ${fmt(dates[dates.length-1])}`;
+  }
+
+  function populatePeriodFilter(allData){
+    const sel = $('periodSelect');
+    sel.innerHTML = '';
+    const months = new Map();
+    allData.forEach(t=>{
+      const d = dt(t.entry_time);
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      months.set(key, (months.get(key)||0)+1);
+    });
+    const optAll = document.createElement('option');
+    optAll.value = 'all';
+    optAll.textContent = `All records (${allData.length} trades)`;
+    sel.appendChild(optAll);
+
+    if(months.size > 1){
+      for(const [k, count] of months.entries()){
+        const opt = document.createElement('option');
+        opt.value = k;
+        const [yr, mo] = k.split('-');
+        const dateObj = new Date(Number(yr), Number(mo)-1, 1);
+        opt.textContent = `${dateObj.toLocaleDateString('en-IN',{month:'long',year:'numeric'})} (${count} trades)`;
+        sel.appendChild(opt);
+      }
+    }
+    sel.value = selectedPeriod;
+  }
+
+  function applyPeriodFilter(){
+    selectedPeriod = $('periodSelect').value;
+    if(selectedPeriod === 'all'){
+      trades = [...rawTrades];
+    } else {
+      trades = rawTrades.filter(t=>{
+        const d = dt(t.entry_time);
+        const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        return k === selectedPeriod;
+      });
+    }
+    hasGeneratedInsights = false;
+    dismissedInsightIds.clear();
+    insights = [];
+    renderSummary();
+    setView('overview');
+  }
+
+  function renderSummary(){
+    const s=summary(trades);
+    const metrics=[
+      ['Completed trades', number(s.count), 'Normalised round-trip records'],
+      ['Gross P&L', signedMoney(s.gross), 'Before recorded charges'],
+      ['Recorded charges', money(s.charges), 'From trade records'],
+      ['Net P&L', signedMoney(s.net), 'Gross P&L minus charges']
+    ];
+    $('metricGrid').innerHTML=metrics.map((m,i)=>`
+      <div class="metric">
+        <div class="metric-label">${m[0]}</div>
+        <div class="metric-value ${i===3?(s.net<0?'negative':'positive'):i===1?(s.gross<0?'negative':'positive'):''}">${m[1]}</div>
+        <div class="metric-note">${m[2]}</div>
+      </div>`).join('');
+    $('periodLabel').textContent='Review period · '+formatDateRange(trades);
+    $('dataSummary').textContent=`${trades.length} ${isDemo?'synthetic demo':'uploaded'} completed trades loaded. Net P&L is derived from gross P&L less recorded charges.`;
+    $('dataBadge').textContent=isDemo?'Synthetic demo data':'Uploaded CSV';
+  }
+
+  function setView(view){
+    ['overview','insights','experiment'].forEach(v=>$(v+'View').classList.toggle('hidden',view!==v));
+    document.querySelectorAll('.step').forEach(btn=>{
+      const v=btn.dataset.step;
+      const isActive = v === view;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-current', isActive ? 'step' : 'false');
+      if(v === 'overview') btn.disabled = false;
+      else if(v === 'insights') btn.disabled = !hasGeneratedInsights;
+      else if(v === 'experiment') btn.disabled = !hasGeneratedInsights || insights.length === 0;
+    });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function renderInsightsList(){
+    const activeInsights = insights.filter(x => !dismissedInsightIds.has(x.id));
+    $('insightCount').textContent=`${activeInsights.length} ${activeInsights.length===1?'finding':'findings'}`;
+
+    if(!activeInsights.length){
+      if(insights.length > 0 && dismissedInsightIds.size >= insights.length){
+        $('insightList').innerHTML='<div class="empty"><strong>All insights have been dismissed.</strong><br/><p style="margin:8px 0 14px">You dismissed all findings for this review period.</p><button class="btn" id="restoreDismissedBtn" type="button">Restore dismissed insights</button></div>';
+        $('restoreDismissedBtn').addEventListener('click', restoreDismissedInsights);
+      } else {
+        $('insightList').innerHTML='<div class="empty"><strong>No supported costly habits found.</strong><br/>The current data does not contain enough eligible trades or statistical evidence for these rules. TradeLens will not invent a finding to fill the space.</div>';
+      }
+      return;
+    }
+
+    $('insightList').innerHTML=activeInsights.map((x,i)=>`
+      <article class="insight">
+        <div class="rank">${i+1}</div>
+        <div>
+          <p class="insight-title">${escapeHtml(x.title)}</p>
+          <p class="insight-copy">${escapeHtml(x.description)}</p>
+          <div class="meta">
+            <span class="tag">${escapeHtml(x.sample)}</span>
+            <span class="tag">Losses in losing trades: ${money(x.losingLossAmount)}</span>
+          </div>
+          <button class="link-btn" data-evidence="${x.id}">Inspect supporting trades →</button>
+        </div>
+        <div class="impact">
+          <div class="amount">${money(x.cohortDeficit)}</div>
+          <small>Net cohort deficit</small>
+        </div>
+      </article>`).join('');
+
+    document.querySelectorAll('[data-evidence]').forEach(btn=>btn.addEventListener('click',()=>openEvidence(btn.dataset.evidence)));
+  }
+
+  /* Data Visualisation Generator for Evidence Modal */
+  function renderVisualisation(x){
+    if(x.id === 'holding'){
+      const maxDur = Math.max(x.winningMedian, x.losingMedian, 1);
+      const winPct = Math.round((x.winningMedian / maxDur) * 100);
+      const lossPct = Math.round((x.losingMedian / maxDur) * 100);
+      const ratio = (x.losingMedian / Math.max(x.winningMedian, 0.1)).toFixed(1);
+      return `
+        <div class="vis-card" role="region" aria-label="Holding duration comparison chart">
+          <div class="vis-header">
+            <span class="vis-title">Holding Duration Comparison</span>
+            <span class="vis-subtitle">Median duration in minutes</span>
+          </div>
+          <div class="vis-bar-group">
+            <div class="vis-bar-row">
+              <span class="vis-bar-label">Winning trades</span>
+              <div class="vis-bar-track">
+                <div class="vis-bar-fill win" style="width: ${winPct}%;"></div>
+              </div>
+              <span class="vis-bar-val win-val">${number(x.winningMedian)}m</span>
+            </div>
+            <div class="vis-bar-row">
+              <span class="vis-bar-label">Losing trades</span>
+              <div class="vis-bar-track">
+                <div class="vis-bar-fill loss" style="width: ${lossPct}%;"></div>
+              </div>
+              <span class="vis-bar-val loss-val">${number(x.losingMedian)}m</span>
+            </div>
+          </div>
+          <div class="vis-caption">
+            Losing trades were held <strong>${ratio}× longer</strong> on median than profitable trades (${number(x.losingMedian)} min vs ${number(x.winningMedian)} min).
+          </div>
+        </div>`;
+    }
+
+    if(x.id === 'after-loss'){
+      const total = x.winCount + x.lossCount;
+      const winPct = Math.round((x.winCount / total) * 100);
+      const lossPct = 100 - winPct;
+      return `
+        <div class="vis-card" role="region" aria-label="Cohort outcome breakdown chart">
+          <div class="vis-header">
+            <span class="vis-title">Qualifying Cohort Composition</span>
+            <span class="vis-subtitle">${total} trades opened within 10 min of a loss</span>
+          </div>
+          <div class="vis-stacked-bar" role="img" aria-label="${x.winCount} wins and ${x.lossCount} losses">
+            <div class="vis-segment win" style="width: ${winPct}%;">${x.winCount} wins (${winPct}%)</div>
+            <div class="vis-segment loss" style="width: ${lossPct}%;">${x.lossCount} losses (${lossPct}%)</div>
+          </div>
+          <div class="vis-split-stats">
+            <div class="vis-split-stat win">
+              <small>Gains from ${x.winCount} wins</small>
+              <strong>+${money(x.winningGainAmount)}</strong>
+            </div>
+            <div class="vis-split-stat loss">
+              <small>Losses from ${x.lossCount} losses</small>
+              <strong>−${money(x.losingLossAmount)}</strong>
+            </div>
+            <div class="vis-split-stat net">
+              <small>Net cohort drag</small>
+              <strong>${signedMoney(x.cohortNet)}</strong>
+            </div>
+          </div>
+          <div class="vis-caption">
+            The cohort includes both profitable and losing trades (${winPct}% win rate). The actual net drag is <strong>${money(x.cohortDeficit)}</strong>, not the raw ${money(x.losingLossAmount)} loss sum.
+          </div>
+        </div>`;
+    }
+
+    if(x.id === 'large-size'){
+      const total = x.winCount + x.lossCount;
+      const winPct = Math.round((x.winCount / total) * 100);
+      const lossPct = 100 - winPct;
+      return `
+        <div class="vis-card" role="region" aria-label="Large positions breakdown chart">
+          <div class="vis-header">
+            <span class="vis-title">Largest-Quartile Sizing Breakdown</span>
+            <span class="vis-subtitle">${total} trades with notional &ge; ${money(x.q75)}</span>
+          </div>
+          <div class="vis-stacked-bar" role="img" aria-label="${x.winCount} wins and ${x.lossCount} losses">
+            <div class="vis-segment win" style="width: ${winPct}%;">${x.winCount} wins (${winPct}%)</div>
+            <div class="vis-segment loss" style="width: ${lossPct}%;">${x.lossCount} losses (${lossPct}%)</div>
+          </div>
+          <div class="vis-split-stats">
+            <div class="vis-split-stat win">
+              <small>Gains from ${x.winCount} large wins</small>
+              <strong>+${money(x.winningGainAmount)}</strong>
+            </div>
+            <div class="vis-split-stat loss">
+              <small>Losses from ${x.lossCount} large losses</small>
+              <strong>−${money(x.losingLossAmount)}</strong>
+            </div>
+            <div class="vis-split-stat net">
+              <small>Net quartile balance</small>
+              <strong>${signedMoney(x.cohortNet)}</strong>
+            </div>
+          </div>
+          <div class="vis-caption">
+            75th-percentile notional is <strong>${money(x.q75)}</strong>. Large trades produced ${x.winCount} wins alongside ${x.lossCount} losses, for a net deficit of <strong>${money(x.cohortDeficit)}</strong>.
+          </div>
+        </div>`;
+    }
+
+    return '';
+  }
+
+  function openEvidence(id){
+    const x=insights.find(v=>v.id===id); if(!x) return;
+    lastFocusedElement = document.activeElement;
+
+    const rows=x.trades.map(t=>`<tr>
+      <td class="mono">${escapeHtml(t.trade_id)}</td>
+      <td><strong>${escapeHtml(t.instrument)}</strong></td>
+      <td>${dt(t.entry_time).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</td>
+      <td>${number(durationMin(t))} min</td>
+      <td>${money(t.position_size_inr)}</td>
+      <td class="${t.net_pnl_inr<0?'negative':'positive'}"><strong>${signedMoney(t.net_pnl_inr)}</strong></td>
+    </tr>`).join('');
+
+    const visHtml = renderVisualisation(x);
+
+    $('modalRoot').innerHTML=`
+      <div class="modal-backdrop" id="modalBackdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal-top">
+            <div>
+              <div class="eyebrow">Evidence details</div>
+              <h2 id="modalTitle">${escapeHtml(x.title)}</h2>
+              <p class="sub">${escapeHtml(x.description)}</p>
+            </div>
+            <button class="close" id="closeModal" aria-label="Close evidence modal" type="button">×</button>
+          </div>
+
+          <div class="evidence-stats">
+            ${x.stats.map(s=>`<div class="mini-stat"><small>${escapeHtml(s[0])}</small><strong>${escapeHtml(s[1])}</strong></div>`).join('')}
+          </div>
+
+          ${visHtml}
+
+          <div class="small-muted" style="margin-top:12px"><strong>Detection rule:</strong> ${escapeHtml(x.rule)}</div>
+          
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Supporting trade records">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Trade</th>
+                  <th scope="col">Instrument</th>
+                  <th scope="col">Entry</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Position size</th>
+                  <th scope="col">Net P&L</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+
+          <div class="interpretation"><strong>Important limitation:</strong> ${escapeHtml(x.caveat)}</div>
+          
+          <div class="feedback">
+            <button type="button" data-feedback="useful" data-id="${x.id}">Useful observation</button>
+            <button type="button" data-feedback="not-useful" data-id="${x.id}">Not useful</button>
+            <button type="button" data-feedback="dismiss" data-id="${x.id}">Dismiss insight</button>
+          </div>
+        </section>
+      </div>`;
+
+    $('modalRoot').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    $('closeModal').addEventListener('click', closeEvidence);
+    $('modalBackdrop').addEventListener('click', e => { if(e.target.id==='modalBackdrop') closeEvidence(); });
+    window.addEventListener('keydown', handleModalKeydown);
+
+    document.querySelectorAll('[data-feedback]').forEach(btn=>btn.addEventListener('click',()=>handleFeedback(btn.dataset.id,btn.dataset.feedback)));
+    $('closeModal').focus();
+  }
+
+  function closeEvidence(){
+    $('modalRoot').classList.add('hidden');
+    $('modalRoot').innerHTML='';
+    document.body.style.overflow = '';
+    window.removeEventListener('keydown', handleModalKeydown);
+    if(lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
+  }
+
+  function handleModalKeydown(e){
+    if(e.key === 'Escape'){
+      e.preventDefault();
+      closeEvidence();
+    } else if(e.key === 'Tab'){
+      const focusables = $('modalRoot').querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if(!focusables.length) return;
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if(e.shiftKey && document.activeElement === first){
+        e.preventDefault();
+        last.focus();
+      } else if(!e.shiftKey && document.activeElement === last){
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  function handleFeedback(id,kind){
+    if(kind==='dismiss'){
+      dismissedInsightIds.add(id);
+      renderInsightsList();
+      closeEvidence();
+      showToast('Insight dismissed for this review.');
+      return;
+    }
+    const msg = kind==='useful' ? 'Marked as useful.' : 'Marked as not useful.';
+    const btn = document.querySelector(`[data-feedback="${kind}"][data-id="${id}"]`);
+    if(btn) btn.classList.add('selected');
+    showToast(msg);
+  }
+
+  function restoreDismissedInsights(){
+    dismissedInsightIds.clear();
+    renderInsightsList();
+    showToast('All dismissed insights restored.');
+  }
+
+  const habits=[
+    {id:'holding',title:'Record an exit rationale',desc:'For a trade held beyond planned duration, record why you chose to keep holding.',commit:'For the next month, I will record the reason whenever a trade stays open beyond my planned duration, then review those records at month-end.'},
+    {id:'large-size',title:'Document position-size rationale',desc:'Record the reason and planned exposure for each position before comparing outcomes.',commit:'For the next month, I will record the rationale and planned size for each position before reviewing its outcome.'},
+    {id:'after-loss',title:'Pause and review after a loss',desc:'Before entering a trade within 10 minutes of a loss, verify whether it follows your pre-defined plan.',commit:'For the next month, I will review my pre-defined plan before entering a trade after a loss and record whether the entry followed it.'}
+  ];
+
+  function loadSavedCommitment(){
+    try{
+      const saved = localStorage.getItem('tradelens_commitment');
+      if(saved){
+        activeCommitment = JSON.parse(saved);
+        $('savedPill').classList.remove('hidden');
+      } else {
+        activeCommitment = null;
+        $('savedPill').classList.add('hidden');
+      }
+    }catch(e){
+      activeCommitment = null;
+    }
+  }
+
+  function renderActiveCommitmentBox(){
+    const box = $('activeCommitmentContainer');
+    if(!activeCommitment){
+      box.innerHTML = '';
+      return;
+    }
+    const savedDate = new Date(activeCommitment.saved_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    box.innerHTML = `
+      <div class="active-commitment-box" role="region" aria-label="Currently active commitment">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <span class="active-pill" style="margin-bottom:8px;display:inline-block">Active recorded commitment</span>
+            <h3>${escapeHtml(activeCommitment.title)}</h3>
+            <p>"${escapeHtml(activeCommitment.commitment)}"</p>
+            <div class="active-commitment-meta">Recorded on ${savedDate} · Saved in browser storage</div>
+          </div>
+          <button type="button" class="btn" id="replaceCommitmentBtn">Update or replace</button>
+        </div>
+      </div>`;
+    $('replaceCommitmentBtn').addEventListener('click', () => {
+      $('choiceContainer').classList.remove('hidden');
+      $('choiceGrid').scrollIntoView({behavior:'smooth'});
+    });
+  }
+
+  function renderChoices(){
+    loadSavedCommitment();
+    renderActiveCommitmentBox();
+
+    const activeInsights = insights.filter(x => !dismissedInsightIds.has(x.id));
+    const availableHabits = habits.filter(h => activeInsights.some(x => x.id === h.id));
+
+    if(!availableHabits.length){
+      $('choiceGrid').innerHTML = '<div class="empty" style="grid-column:1/-1"><strong>No active costly habits found.</strong><br/>There are currently no active findings in your review to create a habit from.</div>';
+      $('commitText').textContent = 'No active habit selected.';
+      $('saveCommitmentBtn').disabled = true;
+      return;
+    }
+
+    $('choiceGrid').innerHTML = availableHabits.map(h => `
+      <button class="choice ${selectedHabit===h.id?'selected':''}" data-choice="${h.id}" type="button">
+        <span class="radio" aria-hidden="true"></span>
+        <strong>${escapeHtml(h.title)}</strong>
+        <span>${escapeHtml(h.desc)}</span>
+      </button>`).join('');
+
+    document.querySelectorAll('[data-choice]').forEach(btn => btn.addEventListener('click', () => {
+      selectedHabit = btn.dataset.choice;
+      renderChoices();
+      const hObj = habits.find(h => h.id === selectedHabit);
+      $('commitText').textContent = hObj ? hObj.commit : '';
+      $('saveCommitmentBtn').disabled = false;
+      $('savedNotice').classList.add('hidden');
+    }));
+
+    if(selectedHabit && availableHabits.some(h=>h.id===selectedHabit)){
+      $('commitText').textContent = habits.find(h => h.id === selectedHabit).commit;
+      $('saveCommitmentBtn').disabled = false;
+    } else {
+      selectedHabit = '';
+      $('commitText').textContent = 'Select a behaviour above to create your commitment.';
+      $('saveCommitmentBtn').disabled = true;
+    }
+  }
+
+  function saveCommitment(){
+    if(!selectedHabit) return;
+    const habit = habits.find(h => h.id === selectedHabit);
+    const record = {
+      habit_id: habit.id,
+      title: habit.title,
+      commitment: habit.commit,
+      saved_at: new Date().toISOString(),
+      source: isDemo ? 'synthetic-demo' : 'uploaded-csv-review'
+    };
+    try{
+      localStorage.setItem('tradelens_commitment', JSON.stringify(record));
+      activeCommitment = record;
+      $('savedPill').classList.remove('hidden');
+      renderActiveCommitmentBox();
+    }catch(e){
+      showToast('Browser storage is unavailable; commitment not saved.');
+      return;
+    }
+    $('savedNotice').textContent = 'Commitment saved in this browser. At your next monthly review, compare your recorded trades against this commitment.';
+    $('savedNotice').classList.remove('hidden');
+    showToast('Your commitment has been saved.');
+  }
+
+  function showToast(message){
+    $('toast').textContent=message;
+    $('toast').classList.remove('hidden');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2600);
+  }
+
+  function loadSample(){
+    const rows = window.SAMPLE_TRADES;
+    rawTrades = validateTrades(rows.map(r=>({...r,net_pnl_inr:r.gross_pnl_inr-r.charges_inr})));
+    trades = [...rawTrades];
+    isDemo = true;
+    hasGeneratedInsights = false;
+    dismissedInsightIds.clear();
+    insights = [];
+    selectedPeriod = 'all';
+    populatePeriodFilter(rawTrades);
+    renderSummary();
+    loadSavedCommitment();
+    $('errorBox').classList.add('hidden');
+    setView('overview');
+  }
+
+  function downloadCsv(){
+    const cols = REQUIRED;
+    const lines = [cols.join(','), ...trades.map(t=>cols.map(k=>String(t[k]??'')).join(','))];
+    const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tradelens_sample_trades.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function handleUpload(file){
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const parsed = parseCsv(text);
+      rawTrades = validateTrades(parsed);
+      trades = [...rawTrades];
+      isDemo = false;
+      hasGeneratedInsights = false;
+      dismissedInsightIds.clear();
+      insights = [];
+      selectedPeriod = 'all';
+      populatePeriodFilter(rawTrades);
+      renderSummary();
+      loadSavedCommitment();
+      $('errorBox').classList.add('hidden');
+      setView('overview');
+      showToast(`${trades.length} completed trades loaded.`);
+    }catch(err){
+      $('errorBox').textContent = err.message || 'Unable to read this CSV.';
+      $('errorBox').classList.remove('hidden');
+    }
+    $('csvInput').value = '';
+  }
+
+  function generate(){
+    try{
+      const res = createInsights(trades);
+      insights = res.insights;
+      hasGeneratedInsights = true;
+      dismissedInsightIds.clear();
+
+      const supBox = $('suppressedNotice');
+      if(res.suppressedReason){
+        supBox.textContent = 'Notice on Rule C (Position Sizing): ' + res.suppressedReason;
+        supBox.classList.remove('hidden');
+      } else {
+        supBox.classList.add('hidden');
+      }
+
+      renderInsightsList();
+      setView('insights');
+    }catch(e){
+      $('errorBox').textContent = 'The review could not be generated: ' + e.message;
+      $('errorBox').classList.remove('hidden');
+      setView('overview');
+    }
+  }
+
+  $('generateBtn').addEventListener('click', generate);
+  $('uploadBtn').addEventListener('click', ()=>$('csvInput').click());
+  $('csvInput').addEventListener('change', e=>handleUpload(e.target.files[0]));
+  $('downloadBtn').addEventListener('click', downloadCsv);
+  $('periodSelect').addEventListener('change', applyPeriodFilter);
+
+  $('resetBtn').addEventListener('click', ()=>{
+    selectedHabit = '';
+    $('commitText').textContent = 'Select a behaviour above to create your commitment.';
+    $('saveCommitmentBtn').disabled = true;
+    $('savedNotice').classList.add('hidden');
+    loadSample();
+    showToast('Synthetic demo data restored.');
+  });
+
+  $('toExperimentBtn').addEventListener('click', ()=>{
+    renderChoices();
+    setView('experiment');
+  });
+  $('backToInsightsBtn').addEventListener('click', ()=>setView('insights'));
+  $('saveCommitmentBtn').addEventListener('click', saveCommitment);
+
+  document.querySelectorAll('.step').forEach(btn => btn.addEventListener('click', ()=>{
+    if(!btn.disabled){
+      if(btn.dataset.step === 'experiment') renderChoices();
+      setView(btn.dataset.step);
+    }
+  }));
+
+  window.SAMPLE_TRADES = JSON.parse(document.getElementById('sampleData').textContent);
+  loadSample();
+})();
+</script>
+</body>
+</html>

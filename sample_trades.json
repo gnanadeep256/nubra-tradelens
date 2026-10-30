@@ -1,0 +1,542 @@
+[
+  {
+    "trade_id": "T001",
+    "instrument": "NIFTY",
+    "entry_time": "2026-09-30T09:15",
+    "exit_time": "2026-09-30T09:50",
+    "position_size_inr": 107000.0,
+    "gross_pnl_inr": -1423.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T002",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-09-30T09:55",
+    "exit_time": "2026-09-30T10:27",
+    "position_size_inr": 109000.0,
+    "gross_pnl_inr": -1496.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T003",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-09-30T10:32",
+    "exit_time": "2026-09-30T11:00",
+    "position_size_inr": 111000.0,
+    "gross_pnl_inr": -1569.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T004",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-01T09:15",
+    "exit_time": "2026-10-01T09:23",
+    "position_size_inr": 113000.0,
+    "gross_pnl_inr": -1642.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T005",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-01T09:28",
+    "exit_time": "2026-10-01T09:39",
+    "position_size_inr": 115000.0,
+    "gross_pnl_inr": 1005.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T006",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-01T10:04",
+    "exit_time": "2026-10-01T10:14",
+    "position_size_inr": 117000.0,
+    "gross_pnl_inr": 1096.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T007",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-02T09:15",
+    "exit_time": "2026-10-02T09:27",
+    "position_size_inr": 119000.0,
+    "gross_pnl_inr": 1187.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T008",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-02T09:52",
+    "exit_time": "2026-10-02T10:00",
+    "position_size_inr": 121000.0,
+    "gross_pnl_inr": -1934.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T009",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-02T10:05",
+    "exit_time": "2026-10-02T10:15",
+    "position_size_inr": 123000.0,
+    "gross_pnl_inr": 1369.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T010",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-05T09:15",
+    "exit_time": "2026-10-05T09:50",
+    "position_size_inr": 125000.0,
+    "gross_pnl_inr": -2080.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T011",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-05T09:55",
+    "exit_time": "2026-10-05T10:27",
+    "position_size_inr": 127000.0,
+    "gross_pnl_inr": -2153.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T012",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-05T10:32",
+    "exit_time": "2026-10-05T10:42",
+    "position_size_inr": 129000.0,
+    "gross_pnl_inr": 742.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T013",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-06T09:15",
+    "exit_time": "2026-10-06T09:27",
+    "position_size_inr": 131000.0,
+    "gross_pnl_inr": 833.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T014",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-06T09:52",
+    "exit_time": "2026-10-06T10:03",
+    "position_size_inr": 133000.0,
+    "gross_pnl_inr": 924.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T015",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-06T10:28",
+    "exit_time": "2026-10-06T10:56",
+    "position_size_inr": 135000.0,
+    "gross_pnl_inr": -1595.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T016",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-07T09:15",
+    "exit_time": "2026-10-07T09:23",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": -968.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T017",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-07T09:28",
+    "exit_time": "2026-10-07T10:00",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": -1041.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T018",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-07T10:05",
+    "exit_time": "2026-10-07T10:15",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 1288.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T019",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-08T09:15",
+    "exit_time": "2026-10-08T09:50",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": -1187.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T020",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-08T09:55",
+    "exit_time": "2026-10-08T10:03",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": -1260.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T021",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-08T10:08",
+    "exit_time": "2026-10-08T10:18",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": 661.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T022",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-09T09:15",
+    "exit_time": "2026-10-09T09:27",
+    "position_size_inr": 70500.0,
+    "gross_pnl_inr": 752.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T023",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-09T09:52",
+    "exit_time": "2026-10-09T10:03",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": 843.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T024",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-09T10:28",
+    "exit_time": "2026-10-09T10:36",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": -702.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T025",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-12T09:15",
+    "exit_time": "2026-10-12T09:50",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": -775.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T026",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-12T09:55",
+    "exit_time": "2026-10-12T10:27",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": -848.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T027",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-12T10:32",
+    "exit_time": "2026-10-12T11:00",
+    "position_size_inr": 23000.0,
+    "gross_pnl_inr": -921.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T028",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-13T09:15",
+    "exit_time": "2026-10-13T09:27",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": 1298.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T029",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-13T09:52",
+    "exit_time": "2026-10-13T10:24",
+    "position_size_inr": 32200.0,
+    "gross_pnl_inr": -1067.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T030",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-13T10:29",
+    "exit_time": "2026-10-13T10:39",
+    "position_size_inr": 24500.0,
+    "gross_pnl_inr": 580.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T031",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-14T09:15",
+    "exit_time": "2026-10-14T09:50",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": -1213.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T032",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-14T09:55",
+    "exit_time": "2026-10-14T10:06",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": 762.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T033",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-14T10:31",
+    "exit_time": "2026-10-14T10:41",
+    "position_size_inr": 44000.0,
+    "gross_pnl_inr": 853.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T034",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-15T09:15",
+    "exit_time": "2026-10-15T09:50",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": -1432.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T035",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-15T09:55",
+    "exit_time": "2026-10-15T10:27",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": -655.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T036",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-15T10:32",
+    "exit_time": "2026-10-15T10:42",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 1126.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T037",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-16T09:15",
+    "exit_time": "2026-10-16T09:27",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": 1217.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T038",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-16T09:52",
+    "exit_time": "2026-10-16T10:24",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": -874.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T039",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-16T10:29",
+    "exit_time": "2026-10-16T10:57",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": -947.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T040",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-19T09:15",
+    "exit_time": "2026-10-19T09:23",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": -1020.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T041",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-19T09:28",
+    "exit_time": "2026-10-19T09:39",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": 681.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T042",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-19T10:04",
+    "exit_time": "2026-10-19T10:14",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": 772.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T043",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-20T09:15",
+    "exit_time": "2026-10-20T09:27",
+    "position_size_inr": 50000.0,
+    "gross_pnl_inr": 863.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T044",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-20T09:52",
+    "exit_time": "2026-10-20T10:00",
+    "position_size_inr": 50200.0,
+    "gross_pnl_inr": -1312.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T045",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-20T10:05",
+    "exit_time": "2026-10-20T10:33",
+    "position_size_inr": 23000.0,
+    "gross_pnl_inr": -1385.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T046",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-21T09:15",
+    "exit_time": "2026-10-21T09:50",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": -1458.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T047",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-21T09:55",
+    "exit_time": "2026-10-21T10:27",
+    "position_size_inr": 25000.0,
+    "gross_pnl_inr": -681.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T048",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-21T10:32",
+    "exit_time": "2026-10-21T10:42",
+    "position_size_inr": 24500.0,
+    "gross_pnl_inr": 1318.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T049",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-22T09:15",
+    "exit_time": "2026-10-22T09:50",
+    "position_size_inr": 45000.0,
+    "gross_pnl_inr": -827.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T050",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-22T09:55",
+    "exit_time": "2026-10-22T10:06",
+    "position_size_inr": 26800.0,
+    "gross_pnl_inr": 600.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T051",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-22T10:31",
+    "exit_time": "2026-10-22T10:59",
+    "position_size_inr": 26000.0,
+    "gross_pnl_inr": -973.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T052",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-23T09:15",
+    "exit_time": "2026-10-23T09:27",
+    "position_size_inr": 47500.0,
+    "gross_pnl_inr": 782.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T053",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-23T09:52",
+    "exit_time": "2026-10-23T10:24",
+    "position_size_inr": 28600.0,
+    "gross_pnl_inr": -1119.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T054",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-23T10:29",
+    "exit_time": "2026-10-23T10:39",
+    "position_size_inr": 27500.0,
+    "gross_pnl_inr": 964.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T055",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-26T09:15",
+    "exit_time": "2026-10-26T09:50",
+    "position_size_inr": 68000.0,
+    "gross_pnl_inr": -1265.0,
+    "charges_inr": 35.0
+  },
+  {
+    "trade_id": "T056",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-26T09:55",
+    "exit_time": "2026-10-26T10:03",
+    "position_size_inr": 30400.0,
+    "gross_pnl_inr": -1338.0,
+    "charges_inr": 40.0
+  },
+  {
+    "trade_id": "T057",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-26T10:08",
+    "exit_time": "2026-10-26T10:18",
+    "position_size_inr": 20000.0,
+    "gross_pnl_inr": 1237.0,
+    "charges_inr": 45.0
+  },
+  {
+    "trade_id": "T058",
+    "instrument": "NIFTY",
+    "entry_time": "2026-10-27T09:15",
+    "exit_time": "2026-10-27T09:27",
+    "position_size_inr": 52500.0,
+    "gross_pnl_inr": 1328.0,
+    "charges_inr": 50.0
+  },
+  {
+    "trade_id": "T059",
+    "instrument": "BANKNIFTY",
+    "entry_time": "2026-10-27T09:52",
+    "exit_time": "2026-10-27T10:03",
+    "position_size_inr": 32200.0,
+    "gross_pnl_inr": 1419.0,
+    "charges_inr": 55.0
+  },
+  {
+    "trade_id": "T060",
+    "instrument": "FINNIFTY",
+    "entry_time": "2026-10-27T10:28",
+    "exit_time": "2026-10-27T10:38",
+    "position_size_inr": 21500.0,
+    "gross_pnl_inr": 610.0,
+    "charges_inr": 35.0
+  }
+]

@@ -1,0 +1,43 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Deployment and frameworks
+.vercel/
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files and scratch
+*.tmp
+*.temp
+scratch/
+__pycache__/
+*.py[cod]
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# IDE and Editor configuration
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archives and build artifacts
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Generated submission documents
+*.docx
+*.pdf
