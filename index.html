@@ -202,8 +202,20 @@
       padding: 6px;
       background: #eaeff5;
       border-radius: var(--radius-md);
-      margin-bottom: 22px;
+      margin-bottom: 8px;
     }
+    .stepper-hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 4px;
+      margin-bottom: 18px;
+      padding-left: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity .15s ease;
+    }
+    .stepper-hint.hidden { display: none !important; }
     .step {
       flex: 1;
       border: 0;
@@ -239,7 +251,8 @@
       background: var(--navy);
       color: #fff;
     }
-    .step:disabled {
+    .step:disabled,
+    .step[aria-disabled="true"] {
       opacity: .45;
       cursor: not-allowed;
     }
@@ -948,7 +961,7 @@
       .topinner { padding: 12px 16px; }
       .hero { display: block; padding-top: 20px; }
       .period { margin-top: 10px; display: inline-block; }
-      .step { font-size: 11.5px; padding: 8px 10px; gap: 6px; }
+      .step { font-size: 11.5px; padding: 10px 8px; min-height: 40px; gap: 6px; }
       .step .num { width: 18px; height: 18px; font-size: 10px; }
       .panel { padding: 18px; }
       .metric-value { font-size: 22px; }
@@ -986,11 +999,12 @@
       <div class="period" id="periodLabel">Review period · Loading...</div>
     </section>
 
-    <nav class="stepper" aria-label="Review steps">
-      <button class="step active" data-step="overview" aria-current="step"><span class="num">1</span> Monthly review</button>
-      <button class="step" data-step="insights" aria-current="false" disabled><span class="num">2</span> Costly habits</button>
-      <button class="step" data-step="experiment" aria-current="false" disabled><span class="num">3</span> Next-month experiment</button>
+    <nav class="stepper" id="stepperNav" aria-label="Review steps">
+      <button class="step active" data-step="overview" aria-current="step" aria-disabled="false" aria-label="Step 1: Monthly review"><span class="num">1</span> Monthly review</button>
+      <button class="step" data-step="insights" aria-current="false" aria-disabled="true" title="Generate your review to unlock Costly habits." aria-label="Step 2: Costly habits (Locked — Generate your review to unlock Costly habits.)"><span class="num">2</span> Costly habits</button>
+      <button class="step" data-step="experiment" aria-current="false" aria-disabled="true" title="Generate your review to unlock Costly habits." aria-label="Step 3: Next-month experiment (Locked — Generate your review to unlock Costly habits.)"><span class="num">3</span> Next-month experiment</button>
     </nav>
+    <div id="stepperHint" class="stepper-hint" aria-live="polite">Generate your review to unlock Costly habits.</div>
 
     <!-- Step 1: Monthly Overview -->
     <section id="overviewView" class="panel">
@@ -1926,17 +1940,80 @@
     $('dataBadge').textContent=isDemo?'Synthetic demo data':'Uploaded CSV';
   }
 
-  function setView(view){
-    ['overview','insights','experiment'].forEach(v=>$(v+'View').classList.toggle('hidden',view!==v));
+  let currentActiveView = 'overview';
+
+  function updateNavigation(view){
+    if(view) currentActiveView = view;
+    const activeInsights = insights.filter(x => !dismissedInsightIds.has(x.id));
+    const canAccessInsights = Boolean(hasGeneratedInsights);
+    const canAccessExperiment = Boolean(hasGeneratedInsights && activeInsights.length > 0);
+
+    const hintEl = $('stepperHint');
+    if(hintEl){
+      if(!hasGeneratedInsights){
+        hintEl.textContent = 'Generate your review to unlock Costly habits.';
+        hintEl.classList.remove('hidden');
+      } else if(activeInsights.length === 0){
+        hintEl.textContent = 'At least one active finding is needed to create a commitment.';
+        hintEl.classList.remove('hidden');
+      } else {
+        hintEl.textContent = '';
+        hintEl.classList.add('hidden');
+      }
+    }
+
     document.querySelectorAll('.step').forEach(btn=>{
-      const v=btn.dataset.step;
-      const isActive = v === view;
+      const v = btn.dataset.step;
+      const isActive = v === currentActiveView;
       btn.classList.toggle('active', isActive);
       btn.setAttribute('aria-current', isActive ? 'step' : 'false');
-      if(v === 'overview') btn.disabled = false;
-      else if(v === 'insights') btn.disabled = !hasGeneratedInsights;
-      else if(v === 'experiment') btn.disabled = !hasGeneratedInsights || insights.length === 0;
+
+      btn.disabled = false;
+      if(btn.removeAttribute) btn.removeAttribute('disabled');
+
+      if(v === 'overview'){
+        btn.setAttribute('aria-disabled', 'false');
+        if(btn.removeAttribute) btn.removeAttribute('title');
+        btn.setAttribute('aria-label', 'Step 1: Monthly review');
+      } else if(v === 'insights'){
+        btn.setAttribute('aria-disabled', canAccessInsights ? 'false' : 'true');
+        if(!canAccessInsights){
+          btn.setAttribute('title', 'Generate your review to unlock Costly habits.');
+          btn.setAttribute('aria-label', 'Step 2: Costly habits (Locked — Generate your review to unlock Costly habits.)');
+        } else {
+          if(btn.removeAttribute) btn.removeAttribute('title');
+          btn.setAttribute('aria-label', 'Step 2: Costly habits');
+        }
+      } else if(v === 'experiment'){
+        btn.setAttribute('aria-disabled', canAccessExperiment ? 'false' : 'true');
+        if(!hasGeneratedInsights){
+          btn.setAttribute('title', 'Generate your review to unlock Costly habits.');
+          btn.setAttribute('aria-label', 'Step 3: Next-month experiment (Locked — Generate your review to unlock Costly habits.)');
+        } else if(activeInsights.length === 0){
+          btn.setAttribute('title', 'At least one active finding is needed to create a commitment.');
+          btn.setAttribute('aria-label', 'Step 3: Next-month experiment (Locked — At least one active finding is needed to create a commitment.)');
+        } else {
+          if(btn.removeAttribute) btn.removeAttribute('title');
+          btn.setAttribute('aria-label', 'Step 3: Next-month experiment');
+        }
+      }
     });
+
+    const toExpBtn = $('toExperimentBtn');
+    if(toExpBtn){
+      toExpBtn.disabled = !canAccessExperiment;
+      if(!canAccessExperiment){
+        toExpBtn.setAttribute('title', 'At least one active finding is needed to create a commitment.');
+      } else {
+        if(toExpBtn.removeAttribute) toExpBtn.removeAttribute('title');
+      }
+    }
+  }
+
+  function setView(view){
+    currentActiveView = view;
+    ['overview','insights','experiment'].forEach(v=>$(v+'View').classList.toggle('hidden',view!==v));
+    updateNavigation(view);
     window.scrollTo({top:0,behavior:'smooth'});
   }
 
@@ -1951,6 +2028,7 @@
       } else {
         $('insightList').innerHTML='<div class="empty"><strong>No supported costly habits found.</strong><br/>The current data does not contain enough eligible trades or statistical evidence for these rules. TradeLens will not invent a finding to fill the space.</div>';
       }
+      updateNavigation();
       return;
     }
 
@@ -1973,6 +2051,7 @@
       </article>`).join('');
 
     document.querySelectorAll('[data-evidence]').forEach(btn=>btn.addEventListener('click',()=>openEvidence(btn.dataset.evidence)));
+    updateNavigation();
   }
 
   /* Data Visualisation Generator for Evidence Modal */
@@ -2196,6 +2275,7 @@
   function restoreDismissedInsights(){
     dismissedInsightIds.clear();
     renderInsightsList();
+    updateNavigation();
     showToast('All dismissed insights restored.');
   }
 
@@ -2409,18 +2489,41 @@
   });
 
   $('toExperimentBtn').addEventListener('click', ()=>{
+    const activeInsights = insights.filter(x => !dismissedInsightIds.has(x.id));
+    if(activeInsights.length === 0){
+      showToast('At least one active finding is needed to create a commitment.');
+      return;
+    }
     renderChoices();
     setView('experiment');
   });
   $('backToInsightsBtn').addEventListener('click', ()=>setView('insights'));
   $('saveCommitmentBtn').addEventListener('click', saveCommitment);
 
-  document.querySelectorAll('.step').forEach(btn => btn.addEventListener('click', ()=>{
-    if(!btn.disabled){
-      if(btn.dataset.step === 'experiment') renderChoices();
-      setView(btn.dataset.step);
+  function handleStepActivation(btn, e){
+    if(e && typeof e.preventDefault === 'function') e.preventDefault();
+    const isLocked = btn.getAttribute('aria-disabled') === 'true' || btn.disabled;
+    if(isLocked){
+      const v = btn.dataset.step;
+      if(!hasGeneratedInsights){
+        showToast('Generate your review to unlock Costly habits.');
+      } else if(v === 'experiment'){
+        showToast('At least one active finding is needed to create a commitment.');
+      }
+      return;
     }
-  }));
+    if(btn.dataset.step === 'experiment') renderChoices();
+    setView(btn.dataset.step);
+  }
+
+  document.querySelectorAll('.step').forEach(btn => {
+    btn.addEventListener('click', (e) => handleStepActivation(btn, e));
+    btn.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+        handleStepActivation(btn, e);
+      }
+    });
+  });
 
   window.SAMPLE_TRADES = JSON.parse(document.getElementById('sampleData').textContent);
   loadSample();

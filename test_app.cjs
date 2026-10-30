@@ -41,8 +41,9 @@ class FakeElement {
   }
   addEventListener(name, fn){ this.events[name] = fn; }
   setAttribute(k, v){ this.attributes[k] = String(v); }
+  removeAttribute(k){ delete this.attributes[k]; }
   getAttribute(k){ return this.attributes[k] ?? null; }
-  click(){ if(this.events.click) return this.events.click({ target: this }); }
+  click(){ if(this.events.click) return this.events.click({ target: this, preventDefault(){} }); }
   focus(){ FakeElement.activeElement = this; }
   scrollIntoView(){}
   appendChild(child){
@@ -172,16 +173,17 @@ async function makeContext(initialLocalStorage = {}){
     assert($('metricGrid').innerHTML.includes('60'), 'sample summary should show 60 trades');
     assert($('metricGrid').innerHTML.includes('−₹14,750'), 'sample summary should show net P&L -₹14,750');
 
-    // Check Stepper Navigation restrictions initially: Step 2 and Step 3 disabled
+    // Check Stepper Navigation restrictions initially: Step 2 and Step 3 locked via aria-disabled
     const steps = app.document.querySelectorAll('.step');
-    assert.strictEqual(steps[0].disabled, false, 'Step 1 should be enabled');
-    assert.strictEqual(steps[1].disabled, true, 'Step 2 should be disabled before insight generation');
-    assert.strictEqual(steps[2].disabled, true, 'Step 3 should be disabled before insight generation');
+    assert.strictEqual(steps[0].disabled, false, 'Step 1 should not be natively disabled');
+    assert.strictEqual(steps[0].getAttribute('aria-disabled'), 'false', 'Step 1 aria-disabled should be false');
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'true', 'Step 2 should be locked (aria-disabled="true") before insight generation');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'true', 'Step 3 should be locked (aria-disabled="true") before insight generation');
 
     // Generate insights
     $('generateBtn').click();
-    assert.strictEqual(steps[1].disabled, false, 'Step 2 should be enabled after generation');
-    assert.strictEqual(steps[2].disabled, false, 'Step 3 should be enabled when insights exist');
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'false', 'Step 2 should be unlocked after generation');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'false', 'Step 3 should be unlocked when insights exist');
 
     const insightHtml = $('insightList').innerHTML;
     assert(insightHtml.includes('Losing trades held longer'), 'insight A (holding) should appear');
@@ -451,7 +453,116 @@ async function makeContext(initialLocalStorage = {}){
     console.log('PASS: Standard edge cases validated (duplicates, negative charges, header-only, invalid dates)');
   }
 
-  console.log('ALL COMPREHENSIVE TESTS PASSED SUCCESSFULLY (9/9 BLOCKS)');
+  // TEST 10: Stepper navigation lifecycle, accessible aria-disabled states, keyboard/click feedback, and dynamic guard synchronization
+  {
+    const navApp = await makeContext();
+    const n$ = id => navApp.document.getElementById(id);
+    const steps = navApp.document.steps;
+
+    // 10A: Initial load state & visual styling attributes
+    assert.strictEqual(steps[0].disabled, false, 'Step 1 must not be natively disabled');
+    assert.strictEqual(steps[0].getAttribute('aria-disabled'), 'false', 'Step 1 aria-disabled should be false');
+    assert.strictEqual(steps[1].disabled, false, 'Step 2 must not be natively disabled so it can receive clicks/focus');
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'true', 'Step 2 aria-disabled must be true for visual styling via .step[aria-disabled="true"]');
+    assert.strictEqual(steps[2].disabled, false, 'Step 3 must not be natively disabled so it can receive clicks/focus');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'true', 'Step 3 aria-disabled must be true for visual styling via .step[aria-disabled="true"]');
+    assert(steps[1].getAttribute('title').includes('Generate your review'), 'Step 2 should have explanatory locked tooltip');
+    assert(steps[2].getAttribute('title').includes('Generate your review'), 'Step 3 should have explanatory locked tooltip');
+    assert.strictEqual(n$('toExperimentBtn').disabled, true, 'toExperimentBtn should be disabled initially');
+    assert(n$('stepperHint').textContent.includes('Generate your review'), 'Stepper hint should explain how to unlock Step 2');
+    assert(!n$('stepperHint').classList.contains('hidden'), 'Stepper hint must be visible');
+
+    // 10B: Locked steps receive click and keyboard activation events without changing view
+    // Click locked Step 2
+    steps[1].click();
+    assert(n$('toast').textContent.includes('Generate your review to unlock Costly habits.'), 'Locked click must trigger explanatory toast');
+    assert(!n$('toast').classList.contains('hidden'), 'Toast must be visible');
+    assert(!n$('overviewView').classList.contains('hidden'), 'Overview view must remain active after clicking locked step');
+    assert(n$('insightsView').classList.contains('hidden'), 'Insights view must remain hidden after clicking locked step');
+
+    // Keyboard activation (Enter key) on locked Step 2
+    steps[1].events.keydown({ key: 'Enter', target: steps[1], preventDefault(){} });
+    assert(n$('toast').textContent.includes('Generate your review to unlock Costly habits.'), 'Locked Enter key must trigger explanatory toast');
+    assert(!n$('overviewView').classList.contains('hidden'), 'View must not change on locked keyboard activation');
+
+    // Keyboard activation (Space key) on locked Step 3
+    steps[2].events.keydown({ key: ' ', target: steps[2], preventDefault(){} });
+    assert(n$('toast').textContent.includes('Generate your review to unlock Costly habits.'), 'Locked Space key must trigger explanatory toast');
+    assert(!n$('overviewView').classList.contains('hidden'), 'View must not change on locked keyboard activation');
+
+    // 10C: Post-generation unlocked navigation
+    n$('generateBtn').click();
+    assert.strictEqual(steps[0].getAttribute('aria-disabled'), 'false', 'Step 1 remains unlocked');
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'false', 'Step 2 unlocks after generating review');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'false', 'Step 3 unlocks when active findings exist');
+    assert.strictEqual(steps[1].getAttribute('title'), null, 'Step 2 title tooltip removed when unlocked');
+    assert.strictEqual(steps[2].getAttribute('title'), null, 'Step 3 title tooltip removed when unlocked');
+    assert.strictEqual(n$('toExperimentBtn').disabled, false, 'toExperimentBtn unlocked when active findings exist');
+    assert(n$('stepperHint').classList.contains('hidden'), 'Stepper hint hidden when all navigation unlocked');
+
+    // Unlocked steps navigate correctly
+    steps[2].click(); // navigate to experiment
+    assert(!n$('experimentView').classList.contains('hidden'), 'Clicking unlocked Step 3 navigates to Experiment view');
+    steps[1].click(); // navigate to insights
+    assert(!n$('insightsView').classList.contains('hidden'), 'Clicking unlocked Step 2 navigates to Insights view');
+    steps[0].click(); // navigate to overview
+    assert(!n$('overviewView').classList.contains('hidden'), 'Clicking unlocked Step 1 navigates to Overview view');
+
+    // 10D: Dynamic dismissal synchronization and locked feedback
+    n$('generateBtn').click(); // back to insights
+    // Dismiss first insight
+    navApp.document.querySelectorAll('[data-evidence]')[0].click();
+    navApp.document.querySelectorAll('[data-feedback]').find(b => b.dataset.feedback === 'dismiss').click();
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'false', 'Step 3 remains unlocked with 2 active findings');
+    assert.strictEqual(n$('toExperimentBtn').disabled, false, 'toExperimentBtn remains enabled with 2 active findings');
+
+    // Dismiss remaining two insights
+    navApp.document.querySelectorAll('[data-evidence]')[0].click();
+    navApp.document.querySelectorAll('[data-feedback]').find(b => b.dataset.feedback === 'dismiss').click();
+    navApp.document.querySelectorAll('[data-evidence]')[0].click();
+    navApp.document.querySelectorAll('[data-feedback]').find(b => b.dataset.feedback === 'dismiss').click();
+
+    // Now 0 active findings
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'true', 'Step 3 dynamically locks (aria-disabled="true") when all findings dismissed');
+    assert(steps[2].getAttribute('title').includes('At least one active finding'), 'Step 3 indicates why it is locked');
+    assert.strictEqual(n$('toExperimentBtn').disabled, true, 'toExperimentBtn dynamically locks when 0 active findings');
+    assert(n$('stepperHint').textContent.includes('At least one active finding'), 'Stepper hint informs user findings needed');
+    assert(!n$('stepperHint').classList.contains('hidden'), 'Stepper hint must be visible');
+
+    // Clicking locked Step 3 when all findings dismissed shows explanatory toast and prevents navigation
+    steps[2].click();
+    assert(n$('toast').textContent.includes('At least one active finding is needed to create a commitment.'), 'Locked Step 3 click triggers toast');
+    assert(!n$('insightsView').classList.contains('hidden'), 'View does not switch to experiment when findings dismissed');
+
+    // Clicking toExperimentBtn guard also prevents progression
+    n$('toExperimentBtn').click();
+    assert(n$('toast').textContent.includes('At least one active finding is needed to create a commitment.'), 'toExperimentBtn guard triggers toast');
+
+    // Restore dismissed insights
+    n$('restoreDismissedBtn').click();
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'false', 'Step 3 dynamically unlocks after restoring findings');
+    assert.strictEqual(n$('toExperimentBtn').disabled, false, 'toExperimentBtn dynamically unlocks after restore');
+    assert.strictEqual(steps[2].getAttribute('title'), null, 'Step 3 title removed after restore');
+    assert(n$('stepperHint').classList.contains('hidden'), 'Stepper hint hidden after restore');
+
+    // 10E: Period change reset locks navigation
+    n$('periodSelect').value = '2026-10';
+    n$('periodSelect').events.change({ target: n$('periodSelect') });
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'true', 'Step 2 locks when reporting period changes');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'true', 'Step 3 locks when reporting period changes');
+    assert(n$('stepperHint').textContent.includes('Generate your review'), 'Stepper hint shows generation prompt');
+
+    // 10F: Reset sample data locks navigation
+    n$('generateBtn').click(); // re-generate first
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'false', 'Step 2 unlocked after re-generation');
+    n$('resetBtn').click();
+    assert.strictEqual(steps[1].getAttribute('aria-disabled'), 'true', 'Step 2 locks when sample data reset');
+    assert.strictEqual(steps[2].getAttribute('aria-disabled'), 'true', 'Step 3 locks when sample data reset');
+
+    console.log('PASS: Stepper navigation lifecycle, accessible aria-disabled states, keyboard/click feedback, and dynamic guard synchronization verified');
+  }
+
+  console.log('ALL COMPREHENSIVE TESTS PASSED SUCCESSFULLY (10/10 BLOCKS)');
 })().catch(e => {
   console.error('FAIL:', e.stack || e);
   process.exit(1);
